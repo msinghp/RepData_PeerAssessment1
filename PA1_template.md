@@ -28,7 +28,7 @@ agint2 <- aggregate(steps ~ interval +daytype, data = data, FUN = mean)
 
 For this part of the assignment, you can ignore the missing values in the dataset.
 
-*1.Make a histogram of the total number of steps taken each day *
+*1.Make a histogram of the total number of steps taken each day*
 
 
 ```r
