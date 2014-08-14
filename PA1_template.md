@@ -10,16 +10,6 @@ library(lattice)
 data <- read.csv(file="activity.csv",head=TRUE,sep=",",stringsAsFactors=FALSE)
 dat <- as.Date(data$date,format="%Y-%m-%d")
 data$date <- dat
-data["daytype"] <- NA
-for (x in 1:nrow(data))
-{
-  if ((weekdays(data[x,2]) == "Saturday") | (weekdays(data[x,2]) == "Sunday")) { data[x,4] = "weekend" } else  {data[x,4] = "weekday"}
-}
-dat.f <- factor(data$daytype)
-data$daytype <- dat.f
-ag <- aggregate(steps ~ date, data = data, FUN = sum)
-agint <- aggregate(steps ~ interval, data = data, FUN = mean)
-agint2 <- aggregate(steps ~ interval +daytype, data = data, FUN = mean)
 ```
 
 
@@ -32,6 +22,7 @@ For this part of the assignment, you can ignore the missing values in the datase
 
 
 ```r
+ag <- aggregate(steps ~ date, data = data, FUN = sum)
 ggplot(ag, aes(x=ag$step)) + geom_histogram(colour="black", fill="white",binwidth=800)+
 xlab("Steps per Day")
 ```
@@ -65,6 +56,7 @@ median(ag$steps)
 *1.Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)*
 
 ```r
+agint <- aggregate(steps ~ interval, data = data, FUN = mean)
 ggplot(agint, aes(x=agint$interval,y=agint$steps)) +geom_line()+ylab("Steps")+ xlab("5-minute Intervals")
 ```
 
@@ -162,6 +154,15 @@ For this part the weekdays() function may be of some help here. Use the dataset 
 
 
 ```r
+data1["daytype"] <- NA
+for (x in 1:nrow(data1))
+{
+  if ((weekdays(data1[x,2]) == "Saturday") | (weekdays(data1[x,2]) == "Sunday")) { data1[x,4] = "weekend" } else  {data1[x,4] = "weekday"}
+}
+dat.f <- factor(data1$daytype)
+data1$daytype <- dat.f
+agint2 <- aggregate(steps ~ interval +daytype, data = data1, FUN = mean)
+
 xyplot(steps ~ interval|daytype, agint2, panel = panel.lines,layout = c(1,2))
 ```
 
